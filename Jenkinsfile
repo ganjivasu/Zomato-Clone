@@ -49,5 +49,26 @@ pipeline{
                 sh "trivy fs . > trivyfs.txt"
             }
         }
+        stage("Docker Build & Push"){
+            steps{
+                script{
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
+                       sh "docker build -t zomato ."
+                       sh "docker tag zomato ganjivasu/zomato:latest "
+                       sh "docker push ganjivasu/zomato:latest "
+                    }
+                }
+            }
+        }
+        stage("TRIVY"){
+            steps{
+                sh "trivy image ganjivasu/zomato:latest > trivy.txt" 
+            }
+        }
+        stage('Deploy to container'){
+     steps{
+            sh 'docker run -d --name zomato -p 3000:3000 ganjivasu/zomato:latest'
+          }
+      }
     }
 }
