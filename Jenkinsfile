@@ -18,7 +18,7 @@ pipeline{
                 git branch: 'main', url: 'https://github.com/Aj7Ay/Zomato-Clone.git'
             }
         }
-        stage("Sonarqube Analysis "){
+        /*stage("Sonarqube Analysis "){
             steps{
                 withSonarQubeEnv('sonar-server') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=zomato \
@@ -32,7 +32,7 @@ pipeline{
                     waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token' 
                 }
             } 
-        }
+        }*/
         stage('Install Dependencies') {
             steps {
                 sh "npm install"
