@@ -65,10 +65,18 @@ pipeline{
                 sh "trivy image ganjivasu/zomato:latest > trivy.txt" 
             }
         }
-        stage('Deploy to container'){
-     steps{
-            sh 'docker run -d --name zomato -p 3000:3000 ganjivasu/zomato:latest'
-          }
+    //     stage('Deploy to container'){
+    //  steps{
+    //         sh 'docker run -d --name zomato -p 3000:3000 ganjivasu/zomato:latest'
+    //       }
+    //   }
+
+      stage('Deploy to kubernetes'){
+        steps{
+            script{
+            kubernetesDeploy (configs: 'deploymentservice.yaml', kubeconfigId: 'k8sconfig')
+            }
+        }
       }
     }
 }
